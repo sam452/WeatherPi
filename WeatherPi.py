@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+!/usr/bin/env python
 #
 # WeatherPi Solar Powered Weather Station
 # Version 1.4 April 11, 2015 
@@ -20,7 +20,7 @@ import os
 
 import sendemail
 import pclogging
-import MySQLdb as mdb
+#import MySQLdb as mdb
 
 
 from tentacle_pi.AM2315 import AM2315
