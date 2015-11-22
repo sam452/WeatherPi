@@ -18,9 +18,9 @@ NOTSET=0
 
 import sys
 import time
-import MySQLdb as mdb
+import psycopg2 as mdb
 
-DATABASEPASSWORD = "rmysqlpassword"
+DATABASEPASSWORD = "0"
 
 def log(level, source, message):
 

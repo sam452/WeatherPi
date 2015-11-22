@@ -1,4 +1,4 @@
-!/usr/bin/env python
+#!/usr/bin/env python
 #
 # WeatherPi Solar Powered Weather Station
 # Version 1.4 April 11, 2015 
@@ -20,7 +20,6 @@ import os
 
 import sendemail
 import pclogging
-#import MySQLdb as mdb
 import psycopg2 as mdb
 
 
@@ -676,20 +675,19 @@ def writeWeatherRecord():
 
 	try:
 		print("trying database")
-    		con = mdb.connect('localhost', 'root', DATABASEPASSWORD, 'WeatherPi');
-        con = psycopg2.connect(database='postgres', user='pi', password='0')
+    		#con = mdb.connect('localhost', 'root', DATABASEPASSWORD, 'WeatherPi');
+                con = mdb.connect(database='postgres', user='pi', password='0')
 
     		cur = con.cursor()
 		print "before query"
 
 		# query = 'INSERT INTO WeatherData(TimeStamp,as3935LightningCount, as3935LastInterrupt, as3935LastDistance, as3935LastStatus, currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, insideTemperature, insideHumidity) VALUES(UTC_TIMESTAMP(), %.3f, %.3f, %.3f, "%s", %.3f, %.3f, %.3f, %i, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (as3935LightningCount, as3935LastInterrupt, as3935LastDistance, as3935LastStatus, currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, HTUtemperature, HTUhumidity)
 
-    cur.execute("INSERT INTO weathers ( temperature, humidity, content, created_at) VALUES (%s, %s, %s, %s)",(bmp180Temperature, utsideHumidity, "psycho", VALUES(UTC_TIMESTAMP()))
-		# print("query=%s" % query)
+                cur.execute("INSERT INTO weathers ( temperature, humidity, content, created_at) VALUES (%s, %s, %s, %s)",(bmp180Temperature, utsideHumidity, "psycho", VALUES(UTC_TIMESTAMP())))
+		con.commit()
+# print("query=%s" % query)
 
 		# cur.execute(query)
-	
-		con.commit()
 		
 	except psycopg2.DatabaseError as e:
   
