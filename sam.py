@@ -26,7 +26,7 @@ import psycopg2 as mdb
 from tentacle_pi.AM2315 import AM2315
 import subprocess
 import RPi.GPIO as GPIO
-import doAllGraphs
+#import doAllGraphs
 
 sys.path.append('./RTC_SDL_DS3231')
 sys.path.append('./Adafruit_Python_BMP')
@@ -287,7 +287,7 @@ def processCommand():
 	    	writeWeatherStats()
 		sampleSunAirPlus()
 	    	writeSunAirPlusStats()
-		doAllGraphs.doAllGraphs()
+		#doAllGraphs.doAllGraphs()
 		return True
 			
 			
@@ -903,7 +903,7 @@ while True:
 		# print every 900 seconds
                 sampleWeather()
                 sampleSunAirPlus()
-		doAllGraphs.doAllGraphs()
+		#doAllGraphs.doAllGraphs()
 
 	# every 30 minutes, check wifi connections 
 
