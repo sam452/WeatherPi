@@ -34,7 +34,7 @@ sys.path.append('./Adafruit_Python_GPIO')
 sys.path.append('./SDL_Pi_Weather_80422')
 sys.path.append('./SDL_Pi_FRAM')
 sys.path.append('./RaspberryPi-AS3935/RPi_AS3935')
-sys.path.append('./SDL_Pi_INA3221')
+# sys.path.append('./SDL_Pi_INA3221')
 sys.path.append('./SDL_Pi_TCA9545')
 
 
@@ -45,7 +45,7 @@ try:
 except ImportError:
 	import conf
 
-import SDL_Pi_INA3221
+# import SDL_Pi_INA3221
 import SDL_DS3231
 import Adafruit_BMP.BMP085 as BMP180
 import SDL_Pi_Weather_80422 as SDL_Pi_Weather_80422
@@ -277,7 +277,7 @@ def processCommand():
 		sampleWeather()
 		completeCommand()
 	    	writeWeatherStats()
-		sampleSunAirPlus()
+		# sampleSunAirPlus()
 	    	writeSunAirPlusStats()
 		return True
 
@@ -285,7 +285,7 @@ def processCommand():
 		sampleWeather()
 		completeCommand()
 	    	writeWeatherStats()
-		sampleSunAirPlus()
+		# sampleSunAirPlus()
 	    	writeSunAirPlusStats()
 		#doAllGraphs.doAllGraphs()
 		return True
@@ -454,49 +454,49 @@ def sampleWeather():
     	outsideTemperature, outsideHumidity, crc_check = am2315.sense()
 
 
-def sampleSunAirPlus():
+# def sampleSunAirPlus():
 
-	global batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent
-	global batteryPower, solarPower, loadPower, batteryCharge
-
-
-	# turn I2CBus 1 on
- 	tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+# 	global batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent
+# 	global batteryPower, solarPower, loadPower, batteryCharge
 
 
-	print "----------------- "
-	print " SunAirPlus Sampling" 
-	print "----------------- "
-	#
-        # blink GPIO LED when it's run
-        GPIO.setup(SUNAIRLED, GPIO.OUT)
-        GPIO.output(SUNAIRLED, True)
-        time.sleep(0.2)
-        GPIO.output(SUNAIRLED, False)
+# 	# turn I2CBus 1 on
+#  	tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+
+
+# 	print "----------------- "
+# 	print " SunAirPlus Sampling" 
+# 	print "----------------- "
+# 	#
+#         # blink GPIO LED when it's run
+#         GPIO.setup(SUNAIRLED, GPIO.OUT)
+#         GPIO.output(SUNAIRLED, True)
+#         time.sleep(0.2)
+#         GPIO.output(SUNAIRLED, False)
 
 
 	
-        busvoltage1 = ina3221.getBusVoltage_V(LIPO_BATTERY_CHANNEL)
-        shuntvoltage1 = ina3221.getShuntVoltage_mV(LIPO_BATTERY_CHANNEL)
-        # minus is to get the "sense" right.   - means the battery is charging, + that it is discharging
-        batteryCurrent = ina3221.getCurrent_mA(LIPO_BATTERY_CHANNEL)
-        batteryVoltage = busvoltage1 + (shuntvoltage1 / 1000)
-	batteryPower = batteryVoltage * (batteryCurrent/1000)
+#         busvoltage1 = ina3221.getBusVoltage_V(LIPO_BATTERY_CHANNEL)
+#         shuntvoltage1 = ina3221.getShuntVoltage_mV(LIPO_BATTERY_CHANNEL)
+#         # minus is to get the "sense" right.   - means the battery is charging, + that it is discharging
+#         batteryCurrent = ina3221.getCurrent_mA(LIPO_BATTERY_CHANNEL)
+#         batteryVoltage = busvoltage1 + (shuntvoltage1 / 1000)
+# 	batteryPower = batteryVoltage * (batteryCurrent/1000)
 
 
-        busvoltage2 = ina3221.getBusVoltage_V(SOLAR_CELL_CHANNEL)
-        shuntvoltage2 = ina3221.getShuntVoltage_mV(SOLAR_CELL_CHANNEL)
-        solarCurrent = -ina3221.getCurrent_mA(SOLAR_CELL_CHANNEL)
-        solarVoltage = busvoltage2 + (shuntvoltage2 / 1000)
-	solarPower = solarVoltage * (solarCurrent/1000)
+#         busvoltage2 = ina3221.getBusVoltage_V(SOLAR_CELL_CHANNEL)
+#         shuntvoltage2 = ina3221.getShuntVoltage_mV(SOLAR_CELL_CHANNEL)
+#         solarCurrent = -ina3221.getCurrent_mA(SOLAR_CELL_CHANNEL)
+#         solarVoltage = busvoltage2 + (shuntvoltage2 / 1000)
+# 	solarPower = solarVoltage * (solarCurrent/1000)
 
-        busvoltage3 = ina3221.getBusVoltage_V(OUTPUT_CHANNEL)
-        shuntvoltage3 = ina3221.getShuntVoltage_mV(OUTPUT_CHANNEL)
-        loadCurrent = ina3221.getCurrent_mA(OUTPUT_CHANNEL)
-        loadVoltage = busvoltage3 
-	loadPower = loadVoltage * (loadCurrent/1000)
+#         busvoltage3 = ina3221.getBusVoltage_V(OUTPUT_CHANNEL)
+#         shuntvoltage3 = ina3221.getShuntVoltage_mV(OUTPUT_CHANNEL)
+#         loadCurrent = ina3221.getCurrent_mA(OUTPUT_CHANNEL)
+#         loadVoltage = busvoltage3 
+# 	loadPower = loadVoltage * (loadCurrent/1000)
 
-	batteryCharge = returnPercentLeftInBattery(batteryVoltage, 4.19)	
+# 	batteryCharge = returnPercentLeftInBattery(batteryVoltage, 4.19)	
 
 	
 
@@ -888,7 +888,7 @@ while True:
 	if ((secondCount % (5*60)) == 0):
 		# print every 300 seconds
                 sampleWeather()
-                sampleSunAirPlus()
+                # sampleSunAirPlus()
 		writeWeatherRecord()
 		# writePowerRecord()
 
@@ -902,7 +902,7 @@ while True:
 	if ((secondCount % (15*60)) == 0):
 		# print every 900 seconds
                 sampleWeather()
-                sampleSunAirPlus()
+                # sampleSunAirPlus()
 		#doAllGraphs.doAllGraphs()
 
 	# every 30 minutes, check wifi connections 
