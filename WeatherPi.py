@@ -1,4 +1,4 @@
-!/usr/bin/env python
+#!/usr/bin/env python
 #
 # WeatherPi Solar Powered Weather Station
 # Version 1.4 April 11, 2015 
@@ -21,12 +21,12 @@ import os
 import sendemail
 import pclogging
 #import MySQLdb as mdb
-
+import psycopg2 as mdb
 
 from tentacle_pi.AM2315 import AM2315
 import subprocess
 import RPi.GPIO as GPIO
-import doAllGraphs
+#import doAllGraphs
 
 sys.path.append('./RTC_SDL_DS3231')
 sys.path.append('./Adafruit_Python_BMP')
