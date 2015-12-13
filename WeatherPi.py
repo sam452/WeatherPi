@@ -842,7 +842,7 @@ print ""
 print "Program Started at:"+ time.strftime("%Y-%m-%d %H:%M:%S")
 print ""
 
-DATABASEPASSWORD = "rmysqlpassword"
+DATABASEPASSWORD = "0"
 pclogging.log(pclogging.INFO, __name__, "WeatherPi Startup Version 1.9")
 
 sendemail.sendEmail("test", "WeatherPi Startup \n", "The WeatherPi Raspberry Pi has rebooted.", conf.notifyAddress,  conf.fromAddress, "");

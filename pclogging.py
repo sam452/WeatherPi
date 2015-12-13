@@ -39,7 +39,7 @@ def log(level, source, message):
         try:
 	
                 #print("trying database")
-                con = mdb.connect('localhost', 'root', DATABASEPASSWORD, 'WeatherPi');
+                con = mdb.connect(database='postgres', user='pi', password='0');
 
                 cur = con.cursor()
                 #print "before query"
@@ -52,7 +52,7 @@ def log(level, source, message):
                 con.commit()
 
 
-        except mdb.Error, e:
+        except mdb.DatabaseError as e:
 
                 print "Error %d: %s" % (e.args[0],e.args[1])
                 con.rollback()
