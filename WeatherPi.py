@@ -149,77 +149,77 @@ bmp180 = BMP180.BMP085()
 # tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 #time.sleep(0.003)
 
-as3935 = RPi_AS3935(address=0x03, bus=1)
+# as3935 = RPi_AS3935(address=0x03, bus=1)
 
-as3935.set_indoors(False)
-as3935.set_noise_floor(0)
+# as3935.set_indoors(False)
+# as3935.set_noise_floor(0)
 #as3935.calibrate(tun_cap=0x0F)
-as3935.calibrate(tun_cap=0x05)
+# as3935.calibrate(tun_cap=0x05)
 
-as3935LastInterrupt = 0
-as3935LightningCount = 0
-as3935LastDistance = 0
-as3935LastStatus = ""
+# as3935LastInterrupt = 0
+# as3935LightningCount = 0
+# as3935LastDistance = 0
+# as3935LastStatus = ""
 
-as3935Interrupt = False
+# as3935Interrupt = False
 # turn I2CBus 0 on
 # tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 # time.sleep(0.003)
 
-def process_as3935_interrupt():
+# def process_as3935_interrupt():
 
-    global as3935Interrupt
-    global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
+#     global as3935Interrupt
+#     global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
 
-    as3935Interrupt = False
+#     as3935Interrupt = False
 
-    print "processing Interrupt from as3935"
-    # turn I2CBus 0 on
-    #tca9545.write_control_register(TCA9545_CONFIG_BUS0)
-    # turn I2CBus 2 on
-    # tca9545.write_control_register(TCA9545_CONFIG_BUS2)
-    # time.sleep(0.003)
-    # reason = as3935.get_interrupt()
+#     print "processing Interrupt from as3935"
+#     # turn I2CBus 0 on
+#     #tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+#     # turn I2CBus 2 on
+#     # tca9545.write_control_register(TCA9545_CONFIG_BUS2)
+#     # time.sleep(0.003)
+#     # reason = as3935.get_interrupt()
 
-    # as3935LastInterrupt = reason
+#     # as3935LastInterrupt = reason
     
-    if reason == 0x00:
-	as3935LastStatus = "Spurious Interrupt"
-    elif reason == 0x01:
-	as3935LastStatus = "Noise Floor too low. Adjusting"
-        as3935.raise_noise_floor()
-    elif reason == 0x04:
-	as3935LastStatus = "Disturber detected - masking"
-        as3935.set_mask_disturber(True)
-    elif reason == 0x08:
-        now = datetime.now().strftime('%H:%M:%S - %Y/%m/%d')
-        distance = as3935.get_distance()
-	as3935LastDistance = distance
-	as3935LastStatus = "Lightning Detected "  + str(distance) + "km away. (%s)" % now
-	pclogging.log(pclogging.INFO, __name__, "Lightning Detected "  + str(distance) + "km away. (%s)" % now)
-	sendemail.sendEmail("test", "WeatherPi Lightning Detected\n", as3935LastStatus, conf.textnotifyAddress,  conf.textfromAddress, "");
+#     if reason == 0x00:
+# 	as3935LastStatus = "Spurious Interrupt"
+#     elif reason == 0x01:
+# 	as3935LastStatus = "Noise Floor too low. Adjusting"
+#         as3935.raise_noise_floor()
+#     elif reason == 0x04:
+# 	as3935LastStatus = "Disturber detected - masking"
+#         as3935.set_mask_disturber(True)
+#     elif reason == 0x08:
+#         now = datetime.now().strftime('%H:%M:%S - %Y/%m/%d')
+#         distance = as3935.get_distance()
+# 	as3935LastDistance = distance
+# 	as3935LastStatus = "Lightning Detected "  + str(distance) + "km away. (%s)" % now
+# 	pclogging.log(pclogging.INFO, __name__, "Lightning Detected "  + str(distance) + "km away. (%s)" % now)
+# 	sendemail.sendEmail("test", "WeatherPi Lightning Detected\n", as3935LastStatus, conf.textnotifyAddress,  conf.textfromAddress, "");
     
-    print "Last Interrupt = 0x%x:  %s" % (as3935LastInterrupt, as3935LastStatus)
-    # tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+#     print "Last Interrupt = 0x%x:  %s" % (as3935LastInterrupt, as3935LastStatus)
+#     # tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 
-    time.sleep(0.003)
+#     time.sleep(0.003)
 
 
 
-def handle_as3935_interrupt(channel):
-    global as3935Interrupt
+# def handle_as3935_interrupt(channel):
+#     global as3935Interrupt
 
-    print "as3935 Interrupt"
+#     print "as3935 Interrupt"
 
-    as3935Interrupt = True
+#     as3935Interrupt = True
 
 
 #as3935pin = 18
 as3935pin = 22 
 
-GPIO.setup(as3935pin, GPIO.IN)
+# GPIO.setup(as3935pin, GPIO.IN)
 #GPIO.setup(as3935pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(as3935pin, GPIO.RISING, callback=handle_as3935_interrupt)
+# GPIO.add_event_detect(as3935pin, GPIO.RISING, callback=handle_as3935_interrupt)
 
 
 ##############
@@ -365,10 +365,10 @@ def writeWeatherStats():
 
         f = open("/home/pi/WeatherPiSolarPoweredWeather/state/WeatherStats.txt", "w")
 	f.write(str(totalRain) + '\n') 
-	f.write(str(as3935LightningCount) + '\n')
-	f.write(str(as3935LastInterrupt) + '\n')
-	f.write(str(as3935LastDistance) + '\n')
-	f.write(str(as3935LastStatus) + '\n')
+	# f.write(str(as3935LightningCount) + '\n')
+	# f.write(str(as3935LastInterrupt) + '\n')
+	# f.write(str(as3935LastDistance) + '\n')
+	# f.write(str(as3935LastStatus) + '\n')
  	f.write(str(currentWindSpeed) + '\n')
 	f.write(str(currentWindGust) + '\n')
 	f.write(str(totalRain)  + '\n')
@@ -390,8 +390,8 @@ def writeWeatherStats():
 totalRain = 0
 def sampleWeather():
 
-	global as3935LightningCount
-    	global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
+	# global as3935LightningCount
+    	# global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
  	global currentWindSpeed, currentWindGust, totalRain 
   	global 	bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel 
     	global outsideTemperature, outsideHumidity, crc_check 
