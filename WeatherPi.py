@@ -78,11 +78,11 @@ TCA9545_CONFIG_BUS3  =                (0x08)  # 1 = enable, 0 = disable
 
 #/*=========================================================================*/
 
-tca9545 = SDL_Pi_TCA9545.SDL_Pi_TCA9545(addr=TCA9545_ADDRESS, bus_enable = TCA9545_CONFIG_BUS0)
+# tca9545 = SDL_Pi_TCA9545.SDL_Pi_TCA9545(addr=TCA9545_ADDRESS, bus_enable = TCA9545_CONFIG_BUS0)
 
 
 # turn I2CBus 1 on
-tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
 ################
 # SunAirPlus Sensors
@@ -103,7 +103,7 @@ SUNAIRLED = 25
 # GPIO Numbering Mode GPIO.BCM
 #
 # turn I2CBus 0 on
-tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+ # tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 
 anenometerPin = 23
 rainPin = 24
@@ -144,9 +144,9 @@ bmp180 = BMP180.BMP085()
 # ad3935 Set up Lightning Detector
 
 # turn I2CBus 2 on
-tca9545.write_control_register(TCA9545_CONFIG_BUS2)
-time.sleep(0.003)
-#tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+# tca9545.write_control_register(TCA9545_CONFIG_BUS2)
+# time.sleep(0.003)
+# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 #time.sleep(0.003)
 
 as3935 = RPi_AS3935(address=0x03, bus=1)
@@ -163,8 +163,8 @@ as3935LastStatus = ""
 
 as3935Interrupt = False
 # turn I2CBus 0 on
-tca9545.write_control_register(TCA9545_CONFIG_BUS0)
-time.sleep(0.003)
+# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+# time.sleep(0.003)
 
 def process_as3935_interrupt():
 
@@ -177,11 +177,11 @@ def process_as3935_interrupt():
     # turn I2CBus 0 on
     #tca9545.write_control_register(TCA9545_CONFIG_BUS0)
     # turn I2CBus 2 on
-    tca9545.write_control_register(TCA9545_CONFIG_BUS2)
-    time.sleep(0.003)
-    reason = as3935.get_interrupt()
+    # tca9545.write_control_register(TCA9545_CONFIG_BUS2)
+    # time.sleep(0.003)
+    # reason = as3935.get_interrupt()
 
-    as3935LastInterrupt = reason
+    # as3935LastInterrupt = reason
     
     if reason == 0x00:
 	as3935LastStatus = "Spurious Interrupt"
@@ -200,7 +200,7 @@ def process_as3935_interrupt():
 	sendemail.sendEmail("test", "WeatherPi Lightning Detected\n", as3935LastStatus, conf.textnotifyAddress,  conf.textfromAddress, "");
     
     print "Last Interrupt = 0x%x:  %s" % (as3935LastInterrupt, as3935LastStatus)
-    tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+    # tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 
     time.sleep(0.003)
 
@@ -225,7 +225,7 @@ GPIO.add_event_detect(as3935pin, GPIO.RISING, callback=handle_as3935_interrupt)
 ##############
 # Setup AM2315
 # turn I2CBus 1 on
-tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
 am2315 = AM2315(0x5c,"/dev/i2c-1")
 
@@ -233,7 +233,7 @@ am2315 = AM2315(0x5c,"/dev/i2c-1")
 
 # Set up FRAM 
 # turn I2CBus 0 on
-tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 
 #fram = SDL_Pi_FRAM.SDL_Pi_FRAM(addr = 0x50)
 
@@ -410,7 +410,7 @@ def sampleWeather():
 	print "----------------- "
 	#
 	# turn I2CBus 0 on
- 	tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+ 	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 
  	currentWindSpeed = weatherStation.current_wind_speed()/1.6
   	currentWindGust = weatherStation.get_wind_gust()/1.6
@@ -448,7 +448,7 @@ def sampleWeather():
 
 	# get AM2315 Outside Humidity and Outside Temperature
 	# turn I2CBus 1 on
- 	tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+ 	# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
 
     	outsideTemperature, outsideHumidity, crc_check = am2315.sense()
@@ -461,7 +461,7 @@ def sampleSunAirPlus():
 
 
 	# turn I2CBus 1 on
- 	tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+ 	# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
 
 	print "----------------- "
@@ -506,7 +506,7 @@ def sampleAndDisplay():
     	global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
 	
 	# turn I2CBus 0 on
- 	tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+ 	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 	
 	print "----------------- "
 	print " WeatherRack Weather Sensors Sampling" 
@@ -595,7 +595,7 @@ def sampleAndDisplay():
 	print
 	
 	# turn I2CBus 1 on
- 	tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+ 	# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
     	outsideTemperature, outsideHumidity, crc_check = am2315.sense()
     	print "outsideTemperature: %0.1f C" % outsideTemperature
@@ -865,7 +865,7 @@ while True:
 			print "exception - as3935 I2C did not work"
 
 
- 	tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+ 	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 	# process commands from RasPiConnect
 	print "---------------------------------------- "
 
