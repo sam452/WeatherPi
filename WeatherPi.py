@@ -855,27 +855,27 @@ while True:
 	
 	# process Interrupts from Lightning
 
-	if (as3935Interrupt == True):
+	# if (as3935Interrupt == True):
 
-		try:
-			process_as3935_interrupt()
+	# 	try:
+	# 		process_as3935_interrupt()
 
 			
-		except:
-			print "exception - as3935 I2C did not work"
+	# 	except:
+	# 		print "exception - as3935 I2C did not work"
 
 
- 	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
-	# process commands from RasPiConnect
-	print "---------------------------------------- "
+ # 	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+	# # process commands from RasPiConnect
+	# print "---------------------------------------- "
 
-	processCommand()	
+	# processCommand()	
 
-	if ((secondCount % 10) == 0):
-		# print every 10 seconds
-		sampleAndDisplay()		
-		patTheDog()      # reset the WatchDog Timer
-		blinkSunAirLED2X(2)
+	# if ((secondCount % 10) == 0):
+	# 	# print every 10 seconds
+	# 	sampleAndDisplay()		
+	# 	patTheDog()      # reset the WatchDog Timer
+	# 	blinkSunAirLED2X(2)
 
 
 
@@ -886,13 +886,13 @@ while True:
 	if ((secondCount % (5*60)) == 0):
 		# print every 300 seconds
                 sampleWeather()
-                sampleSunAirPlus()
+                # sampleSunAirPlus()
 		writeWeatherRecord()
-		writePowerRecord()
+		# writePowerRecord()
 
-		if (batteryVoltage < 3.5):
-			print "--->>>>Time to Shutdown<<<<---"
-			shutdownPi("low voltage shutdown")
+		# if (batteryVoltage < 3.5):
+		# 	print "--->>>>Time to Shutdown<<<<---"
+		# 	shutdownPi("low voltage shutdown")
 
 
 	# every 15 minutes, build new graphs
@@ -900,8 +900,8 @@ while True:
 	if ((secondCount % (15*60)) == 0):
 		# print every 900 seconds
                 sampleWeather()
-                sampleSunAirPlus()
-		doAllGraphs.doAllGraphs()
+                # sampleSunAirPlus()
+		# doAllGraphs.doAllGraphs()
 
 	# every 30 minutes, check wifi connections 
 
