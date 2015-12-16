@@ -689,7 +689,7 @@ def writeWeatherRecord():
 		
 	except mdb.Error, e:
   
-    		print "Error %d: %s" % (e.args[0],e.args[1])
+    		print ('Error %s' % e    )
     		con.rollback()
     		#sys.exit(1)
     
