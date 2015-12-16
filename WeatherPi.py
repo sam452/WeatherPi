@@ -51,7 +51,7 @@ import Adafruit_BMP.BMP085 as BMP180
 import SDL_Pi_Weather_80422 as SDL_Pi_Weather_80422
 
 import SDL_Pi_FRAM
-from RPi_AS3935 import RPi_AS3935
+# from RPi_AS3935 import RPi_AS3935
 
 import SDL_Pi_TCA9545
 
@@ -429,21 +429,21 @@ def sampleWeather():
 	# HTUtemperature = float(splitstring[0])	
 	# HTUhumidity = float(splitstring[1])	
 
-	if (as3935LastInterrupt == 0x00):
-		as3935InterruptStatus = "----No Lightning detected---"
+	# if (as3935LastInterrupt == 0x00):
+	# 	as3935InterruptStatus = "----No Lightning detected---"
 		
-	if (as3935LastInterrupt == 0x01):
-		as3935InterruptStatus = "Noise Floor: %s" % as3935LastStatus
-		as3935LastInterrupt = 0x00
+	# if (as3935LastInterrupt == 0x01):
+	# 	as3935InterruptStatus = "Noise Floor: %s" % as3935LastStatus
+	# 	as3935LastInterrupt = 0x00
 
-	if (as3935LastInterrupt == 0x04):
-		as3935InterruptStatus = "Disturber: %s" % as3935LastStatus
-		as3935LastInterrupt = 0x00
+	# if (as3935LastInterrupt == 0x04):
+	# 	as3935InterruptStatus = "Disturber: %s" % as3935LastStatus
+	# 	as3935LastInterrupt = 0x00
 
-	if (as3935LastInterrupt == 0x08):
-		as3935InterruptStatus = "Lightning: %s" % as3935LastStatus
-		as3935LightningCount += 1
-		as3935LastInterrupt = 0x00
+	# if (as3935LastInterrupt == 0x08):
+	# 	as3935InterruptStatus = "Lightning: %s" % as3935LastStatus
+	# 	as3935LightningCount += 1
+	# 	as3935LastInterrupt = 0x00
 
 
 	# get AM2315 Outside Humidity and Outside Temperature
@@ -502,8 +502,8 @@ def sampleWeather():
 
 def sampleAndDisplay():
 
-	global totalRain, as3935LightningCount
-    	global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
+	global totalRain #, as3935LightningCount
+    	# global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
 	
 	# turn I2CBus 0 on
  	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
@@ -680,7 +680,7 @@ def writeWeatherRecord():
     		cur = con.cursor()
 		print "before query"
 
-		query = 'INSERT INTO WeatherData(TimeStamp,as3935LightningCount, as3935LastInterrupt, as3935LastDistance, as3935LastStatus, currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, insideTemperature, insideHumidity) VALUES(UTC_TIMESTAMP(), %.3f, %.3f, %.3f, "%s", %.3f, %.3f, %.3f, %i, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (as3935LightningCount, as3935LastInterrupt, as3935LastDistance, as3935LastStatus, currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage)
+		query = 'INSERT INTO WeatherData(TimeStamp, currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, insideTemperature, insideHumidity) VALUES(UTC_TIMESTAMP(), %.3f, %.3f, %.3f, %i, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage)
 		print("query=%s" % query)
 
 		cur.execute(query)
