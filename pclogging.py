@@ -42,10 +42,10 @@ def log(level, source, message):
                 con = mdb.connect(database='postgres', user='pi', password='0');
 
                 cur = con.cursor()
-                #print "before query"
+                print "before query"
 
                 query = "INSERT INTO systemlog(TimeStamp, Level, Source, Message) VALUES(TIMESTAMP '2011-05-16 15:36:38', %i, '%s', '%s')" % (level, source, message)
-	        #print("query=%s" % query)
+	        print("query=%s" % query)
 
                 cur.execute(query)
 
