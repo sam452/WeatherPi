@@ -711,12 +711,12 @@ def writePowerRecord():
 
 	try:
 		print("trying database")
-    		con = mdb.connect('localhost', 'root', DATABASEPASSWORD, 'WeatherPi');
+    		con = mdb.connect(database='postgres', user='pi', password='0');
 
     		cur = con.cursor()
 		print "before query"
 
-		query = 'INSERT INTO PowerSystem(TimeStamp, batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) VALUES (UTC_TIMESTAMP (), %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) 
+		query = 'INSERT INTO PowerSystem(batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) VALUES (%.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) 
 		
 		print("query=%s" % query)
 
@@ -726,7 +726,7 @@ def writePowerRecord():
 		
 	except mdb.Error, e:
   
-    		print "Error %d: %s" % (e.args[0],e.args[1])
+    		print ('Error %s' % e    )
     		con.rollback()
     		#sys.exit(1)
     
@@ -817,10 +817,10 @@ def WLAN_check():
             # did we try a recovery already?
             if (WLAN_check_flg>2):
                 # we have a serious problem and need to reboot the Pi to recover the WLAN connection
-		print "logger WLAN Down, Pi is forcing a reboot"
+		print "logger WLAN Down, Pi cannot forcing a reboot"
    		pclogging.log(pclogging.ERROR, __name__, "WLAN Down, Pi is forcing a reboot")
                 WLAN_check_flg = 0 
-		rebootPi("WLAN Down")
+		# rebootPi("WLAN Down")
                 #subprocess.call(['sudo shutdown -r now'], shell=True)
             else:
                 # try to recover the connection by resetting the LAN
