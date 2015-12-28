@@ -242,13 +242,13 @@ class SDL_Pi_Weather_80422:
  
       			SDL_Pi_Weather_80422._currentWindSpeed = (float(SDL_Pi_Weather_80422._currentWindCount)/float(timeSpan)) * WIND_FACTOR*1000000.0
 
-			#print "SDL_CWS = %f, SDL_Pi_Weather_80422._shortestWindTime = %i, CWCount=%i TPS=%f" % (SDL_Pi_Weather_80422._currentWindSpeed,SDL_Pi_Weather_80422._shortestWindTime, SDL_Pi_Weather_80422._currentWindCount, float(SDL_Pi_Weather_80422._currentWindCount)/float(SDL_Pi_Weather_80422._sampleTime)) 
+			print "SDL_CWS = %f, SDL_Pi_Weather_80422._shortestWindTime = %i, CWCount=%i TPS=%f" % (SDL_Pi_Weather_80422._currentWindSpeed,SDL_Pi_Weather_80422._shortestWindTime, SDL_Pi_Weather_80422._currentWindCount, float(SDL_Pi_Weather_80422._currentWindCount)/float(SDL_Pi_Weather_80422._sampleTime)) 
 
       			SDL_Pi_Weather_80422._currentWindCount = 0
       
       			SDL_Pi_Weather_80422._startSampleTime = micros()
 
- 		#print "SDL_Pi_Weather_80422._currentWindSpeed=", SDL_Pi_Weather_80422._currentWindSpeed 
+ 		print "SDL_Pi_Weather_80422._currentWindSpeed=", SDL_Pi_Weather_80422._currentWindSpeed 
    		return SDL_Pi_Weather_80422._currentWindSpeed
 
 
@@ -303,7 +303,7 @@ class SDL_Pi_Weather_80422:
 
 	def serviceInterruptAnem(self,channel):
 
-	        #print "Anem Interrupt Service Routine"
+	        print "Anem Interrupt Service Routine"
 
   		currentTime= (micros()-SDL_Pi_Weather_80422._lastWindTime);
 
@@ -320,7 +320,7 @@ class SDL_Pi_Weather_80422:
 
 	def serviceInterruptRain(self,channel):
 		
-		#print "Rain Interrupt Service Routine"
+		print "Rain Interrupt Service Routine"
 
   		currentTime=(micros()-SDL_Pi_Weather_80422._lastRainTime);
 
