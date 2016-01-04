@@ -78,7 +78,7 @@ TCA9545_CONFIG_BUS3  =                (0x08)  # 1 = enable, 0 = disable
 
 #/*=========================================================================*/
 
-# tca9545 = SDL_Pi_TCA9545.SDL_Pi_TCA9545(addr=TCA9545_ADDRESS, bus_enable = TCA9545_CONFIG_BUS0)
+tca9545 = SDL_Pi_TCA9545.SDL_Pi_TCA9545(addr=TCA9545_ADDRESS, bus_enable = TCA9545_CONFIG_BUS0)
 
 
 # turn I2CBus 1 on
@@ -103,7 +103,7 @@ SUNAIRLED = 25
 # GPIO Numbering Mode GPIO.BCM
 #
 # turn I2CBus 0 on
- # tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 
 anenometerPin = 23
 rainPin = 24
@@ -163,7 +163,7 @@ bmp180 = BMP180.BMP085()
 
 # as3935Interrupt = False
 # turn I2CBus 0 on
-# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 # time.sleep(0.003)
 
 # def process_as3935_interrupt():
@@ -506,7 +506,7 @@ def sampleAndDisplay():
     	# global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
 	
 	# turn I2CBus 0 on
- 	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+ 	tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 	
 	print "----------------- "
 	print " WeatherRack Weather Sensors Sampling" 
