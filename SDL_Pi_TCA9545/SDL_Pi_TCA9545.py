@@ -48,7 +48,7 @@ class SDL_Pi_TCA9545():
 
 
     def _write(self, register, data):
-        #print "addr =0x%x register = 0x%x data = 0x%x " % (self._addr, register, data)
+        print "addr =0x%x register = 0x%x data = 0x%x " % (self._addr, register, data)
         self._bus.write_byte_data(self._addr, register, data)
 
 
