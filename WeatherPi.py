@@ -78,7 +78,7 @@ TCA9545_CONFIG_BUS3  =                (0x08)  # 1 = enable, 0 = disable
 
 #/*=========================================================================*/
 
-tca9545 = SDL_Pi_TCA9545.SDL_Pi_TCA9545(addr=TCA9545_ADDRESS, bus_enable = TCA9545_CONFIG_BUS0)
+# tca9545 = SDL_Pi_TCA9545.SDL_Pi_TCA9545(addr=TCA9545_ADDRESS, bus_enable = TCA9545_CONFIG_BUS0)
 
 
 # turn I2CBus 1 on
@@ -103,7 +103,7 @@ SUNAIRLED = 25
 # GPIO Numbering Mode GPIO.BCM
 #
 # turn I2CBus 0 on
-tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 
 anenometerPin = 23
 rainPin = 24
@@ -163,7 +163,7 @@ bmp180 = BMP180.BMP085()
 
 # as3935Interrupt = False
 # turn I2CBus 0 on
-tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 # time.sleep(0.003)
 
 # def process_as3935_interrupt():
@@ -243,19 +243,19 @@ am2315 = AM2315(0x5c,"/dev/i2c-1")
 
 def completeCommand():
 
-        f = open("/home/pi/WeatherPiSolarPoweredWeather/state/WeatherCommand.txt", "w")
+        f = open("/home/pi/apps/WeatherPiSolarPoweredWeather/state/WeatherCommand.txt", "w")
         f.write("DONE")
         f.close()
 
 def completeCommandWithValue(value):
 
-        f = open("/home/pi/WeatherPiSolarPoweredWeather/state/WeatherCommand.txt", "w")
+        f = open("/home/pi/apps/WeatherPiSolarPoweredWeather/state/WeatherCommand.txt", "w")
         f.write(value)
         f.close()
 
 def processCommand():
 
-        f = open("//home/pi/WeatherPiSolarPoweredWeather/state/WeatherCommand.txt", "r")
+        f = open("//home/pi/apps/WeatherPiSolarPoweredWeather/state/WeatherCommand.txt", "r")
         command = f.read()
         f.close()
 
@@ -347,7 +347,7 @@ def returnPercentLeftInBattery(currentVoltage, maxVolt):
 # write SunAirPlus stats out to file
 def writeSunAirPlusStats():
 
-        f = open("/home/pi/WeatherPiSolarPoweredWeather/state/SunAirPlusStats.txt", "w")
+        f = open("/home/pi/apps/WeatherPiSolarPoweredWeather/state/SunAirPlusStats.txt", "w")
 	f.write(str(batteryVoltage) + '\n')
 	f.write(str(batteryCurrent ) + '\n')
 	f.write(str(solarVoltage) + '\n')
@@ -363,7 +363,7 @@ def writeSunAirPlusStats():
 # write weather stats out to file
 def writeWeatherStats():
 
-        f = open("/home/pi/WeatherPiSolarPoweredWeather/state/WeatherStats.txt", "w")
+        f = open("/home/pi/apps/WeatherPiSolarPoweredWeather/state/WeatherStats.txt", "w")
 	f.write(str(totalRain) + '\n') 
 	# f.write(str(as3935LightningCount) + '\n')
 	# f.write(str(as3935LastInterrupt) + '\n')
@@ -451,7 +451,7 @@ def sampleWeather():
  	# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
 
-    	outsideTemperature, outsideHumidity, crc_check = am2315.sense()
+    	# outsideTemperature, outsideHumidity, crc_check = am2315.sense()
 
 
 # def sampleSunAirPlus():
@@ -506,7 +506,7 @@ def sampleAndDisplay():
     	# global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
 	
 	# turn I2CBus 0 on
- 	tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+ 	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 	
 	print "----------------- "
 	print " WeatherRack Weather Sensors Sampling" 
