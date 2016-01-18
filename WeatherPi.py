@@ -914,8 +914,8 @@ while True:
 
 
 	# every 48 hours, reboot
-	if ((secondCount % (60*60*48)) == 0):
-		# reboot every 48() hours seconds
+	if ((secondCount % (60*60*48*3)) == 0):
+		# reboot every 48()*3 hours seconds
 		rebootPi("48 hour reboot")		
 
 
