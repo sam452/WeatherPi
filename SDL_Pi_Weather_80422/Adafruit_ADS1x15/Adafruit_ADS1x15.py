@@ -137,7 +137,7 @@ class ADS1x15:
     # change the SMBus number in the initializer below!
     self.i2c = Adafruit_I2C(address)
     self.address = address
-    self.debug = debug
+    self.debug = True
 
     # Make sure the IC specified is valid
     if ((ic < self.__IC_ADS1015) | (ic > self.__IC_ADS1115)):

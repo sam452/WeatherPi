@@ -15,7 +15,8 @@ import random
 import SDL_Pi_TCA9545
 import subprocess
 
-
+from tentacle_pi.AM2315 import AM2315
+am = AM2315(0x5c,"/dev/i2c-1")
 
 #/*=========================================================================
 #    I2C ADDRESS/BITS
@@ -78,6 +79,14 @@ while True:
 	print "tca9545 control register B3-B0 = 0x%x"% (control_register & 0x0f )
 	print "ignore Interrupts if INT3' - INT0' not connected"
 	print "tca9545 control register Interrupts = 0x%x"% ((control_register & 0xf0) >> 4)
+
+        for x in range(0,10):
+           temperature, humidity, crc_check = am.sense()
+           print "temperature: %0.1f" % temperature
+           print "humidity: %0.1f" % humidity
+           print "crc: %s" % crc_check
+           print
+           time.sleep(2.0)
 	
 	i2ccommand = "sudo i2cdetect -y 1"	
 	output = subprocess.check_output (i2ccommand,shell=True, stderr=subprocess.STDOUT )

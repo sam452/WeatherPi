@@ -78,11 +78,11 @@ TCA9545_CONFIG_BUS3  =                (0x08)  # 1 = enable, 0 = disable
 
 #/*=========================================================================*/
 
-# tca9545 = SDL_Pi_TCA9545.SDL_Pi_TCA9545(addr=TCA9545_ADDRESS, bus_enable = TCA9545_CONFIG_BUS0)
+tca9545 = SDL_Pi_TCA9545.SDL_Pi_TCA9545(addr=TCA9545_ADDRESS, bus_enable = TCA9545_CONFIG_BUS0)
 
 
 # turn I2CBus 1 on
-# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
 ################
 # SunAirPlus Sensors
@@ -103,7 +103,7 @@ SUNAIRLED = 25
 # GPIO Numbering Mode GPIO.BCM
 #
 # turn I2CBus 0 on
-# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 
 anenometerPin = 23
 rainPin = 24
@@ -132,7 +132,7 @@ starttime = datetime.utcnow()
 
 ds3231 = SDL_DS3231.SDL_DS3231(1, 0x68, 0x57)
 #comment out the next line after the clock has been initialized
-ds3231.write_now()
+#ds3231.write_now()
 ################
 
 # BMP180 Setup (compatible with BMP085)
@@ -225,7 +225,7 @@ as3935pin = 22
 ##############
 # Setup AM2315
 # turn I2CBus 1 on
-# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
 am2315 = AM2315(0x5c,"/dev/i2c-1")
 
@@ -410,7 +410,7 @@ def sampleWeather():
 	print "----------------- "
 	#
 	# turn I2CBus 0 on
- 	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+ 	tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 
  	currentWindSpeed = weatherStation.current_wind_speed()/1.6
   	currentWindGust = weatherStation.get_wind_gust()/1.6
@@ -448,10 +448,10 @@ def sampleWeather():
 
 	# get AM2315 Outside Humidity and Outside Temperature
 	# turn I2CBus 1 on
- 	# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+ 	tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
 
-    	# outsideTemperature, outsideHumidity, crc_check = am2315.sense()
+    	outsideTemperature, outsideHumidity, crc_check = am2315.sense()
 
 
 # def sampleSunAirPlus():
@@ -506,7 +506,7 @@ def sampleAndDisplay():
     	# global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
 	
 	# turn I2CBus 0 on
- 	# tca9545.write_control_register(TCA9545_CONFIG_BUS0)
+ 	tca9545.write_control_register(TCA9545_CONFIG_BUS0)
 	
 	print "----------------- "
 	print " WeatherRack Weather Sensors Sampling" 
@@ -595,7 +595,7 @@ def sampleAndDisplay():
 	# print
 	
 	# turn I2CBus 1 on
- 	# tca9545.write_control_register(TCA9545_CONFIG_BUS1)
+ 	tca9545.write_control_register(TCA9545_CONFIG_BUS1)
 
     	outsideTemperature, outsideHumidity, crc_check = am2315.sense()
     	print "outsideTemperature: %0.1f C" % outsideTemperature
@@ -679,7 +679,7 @@ def writeWeatherRecord():
                 dt = datetime.now()
     		cur = con.cursor()
 		print "before query"
-                query = 'INSERT INTO weathers(currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsidetemperature, outsideHumidity, currentwinddirection, currentWindDirectionVoltage) VALUES(%.3f, %.3f, %.3f, %i, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  0, 0, currentWindDirection, currentWindDirectionVoltage)
+                query = 'INSERT INTO weathers(currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsidetemperature, outsideHumidity, currentwinddirection, currentWindDirectionVoltage) VALUES(%.3f, %.3f, %.3f, %i, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage)
 
 		#iquery = """INSERT INTO weather(TimeStamp, as3935LightningCount, as3935LastInterrupt, as3935LastDistance, as3935LastStatus,currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, insideTemperature, insideHumidity) VALUES(%(date)s, 0, 0, 0, "NULL", %.3f, %.3f, %.3f, %i, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)""" % ({'date' : dt, currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage})
 		print("query=%s" % query)

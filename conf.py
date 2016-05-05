@@ -4,11 +4,12 @@
 # configuration file - contains customization for exact system
 # JCS 11/8/2013
 #
+import os
 
-mailUser = "yourusename"
-mailPassword = "yourmailpassword"
+mailUser = os.environ.get('GMAIL_UI')
+mailPassword = os.environ.get('GMAIL_PW')
 
-notifyAddress ="you@example.com"
+notifyAddress ="sam@foofrancine.com"
 
-fromAddress = "yourfromaddress@example.com"
+fromAddress = "sam@powerhat.org"
 
