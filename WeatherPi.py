@@ -17,11 +17,13 @@ import random
 import re
 import math
 import os
+import serial
+import logging
+import logging.handlers
 
 import sendemail
-import pclogging
+#import pclogging
 #import MySQLdb as mdb
-import psycopg2 as mdb
 
 from tentacle_pi.AM2315 import AM2315
 import subprocess
@@ -38,6 +40,24 @@ sys.path.append('./SDL_Pi_INA3221')
 sys.path.append('./SDL_Pi_TCA9545')
 
 
+ser = serial.Serial(
+
+    port='/dev/ttyAMA0',
+    baudrate = 74880,
+    parity=serial.PARITY_NONE,
+    stopbits=serial.STOPBITS_ONE,
+    bytesize=serial.EIGHTBITS,
+    timeout=1
+)
+
+callsign = "KK4JZH"
+
+my_logger = logging.getLogger('WX')
+my_logger.setLevel(logging.DEBUG)
+
+handler = logging.handlers.SysLogHandler(address = '/dev/log')
+
+my_logger.addHandler(handler)
 
 # Check for user imports
 try:
@@ -674,33 +694,37 @@ def writeWeatherRecord():
 	# now we have the data, stuff it in the database
 
 	try:
-		print("trying database")
-    		con = mdb.connect(database='postgres', user='pi', password='0');
+		#print("trying database")
+    		#con = mdb.connect(database='postgres', user='pi', password='0');
                 dt = datetime.now()
-    		cur = con.cursor()
-		print "before query"
+    		#cur = con.cursor()
+		#print "before query"
                 query = 'INSERT INTO weathers(currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsidetemperature, outsideHumidity, currentwinddirection, currentWindDirectionVoltage) VALUES(%.3f, %.3f, %.3f, %i, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage)
 
 		#iquery = """INSERT INTO weather(TimeStamp, as3935LightningCount, as3935LastInterrupt, as3935LastDistance, as3935LastStatus,currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, insideTemperature, insideHumidity) VALUES(%(date)s, 0, 0, 0, "NULL", %.3f, %.3f, %.3f, %i, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)""" % ({'date' : dt, currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage})
-		print("query=%s" % query)
 
-		cur.execute(query)
+                wdata = "<wx,%.1f,%.1f,%.1f,%i,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%s>" % (currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, callsign)
+                #wdata = "<weather,%.3f,%.3f,%.3f,%i,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%s>" % (currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, callsign)
+		print("query=%s" % query)
+                ser.write("%s \n" % wdata)
+		#cur.execute(query)
+                my_logger.debug(wdata)
 	
-		con.commit()
-		
+		#con.commit()
+                time.sleep(10)		
 	except mdb.Error, e:
   
     		print ('Error %s' % e    )
-    		con.rollback()
+    		#con.rollback()
     		#sys.exit(1)
     
 	finally:    
-       		cur.close() 
-        	con.close()
+       		#cur.close() 
+        	#con.close()
 
-		del cur
-		del con
-
+		#del cur
+		#del con
+                print ('')
 
 
 
@@ -719,6 +743,7 @@ def writePowerRecord():
 		query = 'INSERT INTO PowerSystem(batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) VALUES (%.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) 
 		
 		print("query=%s" % query)
+                ser.write("%s \n" % query)
 
 		cur.execute(query)
 	
@@ -759,7 +784,7 @@ def patTheDog():
 	
 def shutdownPi(why):
 
-   pclogging.log(pclogging.INFO, __name__, "Pi Shutting Down: %s" % why)
+   #pclogging.log(pclogging.INFO, __name__, "Pi Shutting Down: %s" % why)
    sendemail.sendEmail("test", "WeatherPi Shutting down:"+ why, "The WeatherPi Raspberry Pi shutting down.", conf.notifyAddress,  conf.fromAddress, "");
    sys.stdout.flush()
    time.sleep(10.0)
@@ -768,7 +793,7 @@ def shutdownPi(why):
 
 def rebootPi(why):
 
-   pclogging.log(pclogging.INFO, __name__, "Pi Rebooting: %s" % why)
+   #pclogging.log(pclogging.INFO, __name__, "Pi Rebooting: %s" % why)
    os.system("sudo shutdown -r now")
 
 def blinkSunAirLED2X(howmany):
@@ -818,7 +843,7 @@ def WLAN_check():
             if (WLAN_check_flg>2):
                 # we have a serious problem and need to reboot the Pi to recover the WLAN connection
 		print "logger WLAN Down, Pi cannot forcing a reboot"
-   		pclogging.log(pclogging.ERROR, __name__, "WLAN Down, Pi is forcing a reboot")
+   		#pclogging.log(pclogging.ERROR, __name__, "WLAN Down, Pi is forcing a reboot")
                 WLAN_check_flg = 0 
 		# rebootPi("WLAN Down")
                 #subprocess.call(['sudo shutdown -r now'], shell=True)
@@ -826,7 +851,7 @@ def WLAN_check():
                 # try to recover the connection by resetting the LAN
                 #subprocess.call(['logger "WLAN is down, Pi is resetting WLAN connection"'], shell=True)
 		print "WLAN Down, Pi is trying resetting WLAN connection"
-   		pclogging.log(pclogging.WARNING, __name__, "WLAN Down, Pi is resetting WLAN connection" )
+   		#pclogging.log(pclogging.WARNING, __name__, "WLAN Down, Pi is resetting WLAN connection" )
                 WLAN_check_flg = WLAN_check_flg + 1 # try to recover
                 subprocess.call(['sudo /sbin/ifdown wlan0 && sleep 10 && sudo /sbin/ifup --force wlan0'], shell=True)
         else:
@@ -844,7 +869,7 @@ print "Program Started at:"+ time.strftime("%Y-%m-%d %H:%M:%S")
 print ""
 
 DATABASEPASSWORD = "0"
-pclogging.log(pclogging.INFO, __name__, "WeatherPi Startup Version 1.9")
+#pclogging.log(pclogging.INFO, __name__, "WeatherPi Startup Version 1.9")
 
 sendemail.sendEmail("test", "WeatherPi Startup \n", "The WeatherPi Raspberry Pi has rebooted.", conf.notifyAddress,  conf.fromAddress, "");
 

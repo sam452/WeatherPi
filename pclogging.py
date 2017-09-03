@@ -18,7 +18,7 @@ NOTSET=0
 
 import sys
 import time
-import psycopg2 as mdb
+#import psycopg2 as mdb
 
 DATABASEPASSWORD = "0"
 
