@@ -20,6 +20,7 @@ import os
 import serial
 import logging
 import logging.handlers
+import requests
 
 import sendemail
 #import pclogging
@@ -705,16 +706,23 @@ def writeWeatherRecord():
 
                 wdata = "<wx,%.1f,%.1f,%.1f,%i,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%.1f,%s>" % (currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, callsign)
                 #wdata = "<weather,%.3f,%.3f,%.3f,%i,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%s>" % (currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, callsign)
+                wxpayload = {'currentWindSpeed': currentWindSpeed, 'currentWindGust': currentWindGust, 'totalRain': totalRain, 'bmp180Temperature': bmp180Temperature, 'bmp180Pressure': bmp180Pressure, 'bmp180Altitude': bmp180Altitude, 'bmp180sealevel': bmp180SeaLevel, 'outsideTemperature': outsideTemperature, 'outsideHumidity': outsideHumidity, 'currentwinddirection': currentWindDirection}
+                wxurl = 'http://weather.powerhat.org/record'
+                r = requests.post(wxurl, json=wxpayload)
 		print("query=%s" % query)
                 ser.write("%s \n" % wdata)
 		#cur.execute(query)
                 my_logger.debug(wdata)
+                my_logger.debug(r.text)
+                print(r.text)
+                #os.system("curl -H \"Content-Type: application/json\" -X POST -d '{\"currentWindSpeed\": \"%.1f\", \"currentWindGust\": \"%.1f\", \"totalRain\": \"%.1f\", \"bmp180Temperature\": \"%i\", \"bmp180Pressure\": \"%.1f\", \"bmp180Altitude\": \"%.1f\", \"bmp180SeaLevel\": \"%.1f\", \"outsidetemperature\": \"%.1f\", \"outsideHumidity\": \"%.1f\", \"currentwinddirection\": \"%.1f\", \"currentWindDirectionVoltage\": \"%.1f\" }' http://weather.powerhat.org/record" % (currentWindSpeed, currentWindGust, totalRain,  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel,  outsideTemperature, outsideHumidity, currentWindDirection, currentWindDirectionVoltage, callsign))
+
 	
 		#con.commit()
                 time.sleep(10)		
-	except mdb.Error, e:
+	#except mdb.Error, e:
   
-    		print ('Error %s' % e    )
+    		#print ('Error %s' % e    )
     		#con.rollback()
     		#sys.exit(1)
     
